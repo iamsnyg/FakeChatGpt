@@ -6,6 +6,7 @@ import * as userServices from "../services/user.service.js";
 
 export const createUserController = async(req, res) => {
     const errors = validationResult(req);
+    console.log(errors);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
@@ -13,8 +14,7 @@ export const createUserController = async(req, res) => {
     try {
         console.log(req.body);
         const user = await userServices.createUser(req.body);
-        const token = await userModel.generateToken();
-
+        const token = await user.generateToken();
 
         return res.status(201).json({ user, token });
     } catch (error) {
