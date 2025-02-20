@@ -26,10 +26,8 @@ const userSchema = new mongoose.Schema({
 
 userSchema.pre("save", async function(next) {
     if (!this.isModified("password"))  next();
-
     this.password = await bcrypt.hash(this.password, 10);
     next();
-
 });
 
 userSchema.methods.comparePassword = async function(password) {
@@ -40,6 +38,6 @@ userSchema.methods.generateToken = function(){
     return jwt.sign({ email: this.email }, process.env.SECRET, { expiresIn: 86400 });
 }
 
-const User = mongoose.model("user", userSchema);
+const userModel = mongoose.model("user", userSchema);
 
-export default User;
+export default userModel;
